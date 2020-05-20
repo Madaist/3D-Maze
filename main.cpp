@@ -41,6 +41,25 @@ enum
     A, B, C, D
 };
 
+#define MAXZ 8.0
+#define MINZ -8.0
+#define ZINC 0.4
+
+static float solidZ = MAXZ;
+static float transparentZ = MINZ;
+static GLuint sphereList, cubeList;
+
+void animate(void)
+{
+    if (solidZ <= MINZ || transparentZ >= MAXZ)
+        glutIdleFunc(NULL);
+    else
+    {
+        solidZ -= ZINC;
+        transparentZ += ZINC;
+        glutPostRedisplay();
+    }
+}
 
 
 void levelMenu(int selection)
@@ -54,7 +73,6 @@ void textureMenu(int selection)
     textureRenderMode = selection;
     glutPostRedisplay();
 }
-
 
 
 void changeSize(int w, int h)
@@ -190,7 +208,7 @@ void renderScene(void)
     {
         glDisable(GL_FOG);
         glRotated(180, 0, 0, 1);
-        gluLookAt(0, 0, 70,    0, 0, 1,    0.0f, 1.0f, 0.0f);
+        gluLookAt(0, 5, 70,    0, 0, 1,    0.0f, 1.0f, 0.0f);
     }
 
 
@@ -311,28 +329,28 @@ void renderScene(void)
         for (int i = 0; i < len; i++)
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, bluenotification[i]);
     }
+    /*
+        ///obiectul caruia vreau sa i pun umbra
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_LIGHTING);
+        glColor3f(0.f, 0.f, 0.f);
 
-    ///obiectul caruia vreau sa i pun umbra
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glColor3f(0.f, 0.f, 0.f);  /* shadow color */
+        glPushMatrix();
+        glTranslated(17, 10, 0.6);
+        glMultMatrixf((GLfloat *) floorshadow);
 
-    glPushMatrix();
-    glTranslated(17, 10, 0.6);
-    glMultMatrixf((GLfloat *) floorshadow);
+        glutSolidCube(0.5);
+        glPopMatrix();
 
-    glutSolidCube(0.5);
-    glPopMatrix();
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHTING);
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
-
-    glColor3f(0.4, 1, 0.2);
-    glPushMatrix();
-    glTranslated(17, 11, 0.6);
-    glutSolidCube(0.5);
-    glPopMatrix();
-
+        glColor3f(0.4, 1, 0.2);
+        glPushMatrix();
+        glTranslated(17, 11, 0.6);
+        glutSolidCube(0.5);
+        glPopMatrix();
+    */
 
     vector<Cube> cuburi = drawMaze();
 
@@ -342,6 +360,115 @@ void renderScene(void)
         coliziune = false;
 
     cuburi.clear();
+
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 0.15 };
+    GLfloat mat_shininess[] = { 100.0 };
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    sphereList = glGenLists(1);
+    glNewList(sphereList, GL_COMPILE);
+    glutSolidSphere (0.8, 16, 16);
+    glEndList();
+    cubeList = glGenLists(1);
+    glNewList(cubeList, GL_COMPILE);
+    glutSolidCube (1.5);
+    glEndList();
+
+
+    GLfloat mat_solid[] = { 0.75, 0.75, 0.0, 1.0 };
+    GLfloat mat_zero[] = { 1.0, 0.0, 0.0, 1.0 };//
+    GLfloat mat_transparent[] = { 0.0, 0.8, 0.8, 0.6 };
+    GLfloat mat_emission[] = { 0.0, 0.3, 0.3, 0.6 };//
+
+//cub sfera colt stanga jos
+    glPushMatrix ();
+    glTranslatef (20, 15, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
+
+
+    glPushMatrix ();
+    glTranslatef (20, 15, 1.7);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+
+
+    //cub sfera colt dreapta jos
+    glPushMatrix ();
+    glTranslatef (-23, 14.8, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
+
+
+    glPushMatrix ();
+    glTranslatef (-23, 14.8, 1.7);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+
+    //cub sfera colt stanga sus
+
+    glPushMatrix ();
+    glTranslatef (19.9, -28.2, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
+
+
+    glPushMatrix ();
+    glTranslatef (19.9, -28.2, 1.7);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+
+    //cub sfera colt dreapta sus
+
+    glPushMatrix ();
+    glTranslatef (-23, -28, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
+
+
+    glPushMatrix ();
+    glTranslatef (-23, -28, 1.7);
+
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+    glPopMatrix ();
+
 
     glutSwapBuffers();
 }
@@ -396,6 +523,9 @@ int main(int argc, char **argv)
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
     glutIdleFunc(renderScene);
+    solidZ = MAXZ;
+    transparentZ = MINZ;
+    // glutIdleFunc(animate);
     glutKeyboardFunc(processKeys);
 
     glEnable(GL_DEPTH_TEST);
