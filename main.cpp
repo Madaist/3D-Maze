@@ -6,7 +6,6 @@
 #include <vector>
 #include "SOIL.h"
 #include "cube.h"
-#include "declarations.h"
 #include "utils.h"
 #include "drawings.h"
 using namespace std;
@@ -26,6 +25,7 @@ GLfloat floorshadow[4][4];
 GLfloat lightpos[] = {15, 15, 4, 1};
 int levelRenderMode = NIVEL1;
 int textureRenderMode = GRASS;
+int previousLevel = NIVEL1;
 
 static float solidZ = MAXZ;
 static float transparentZ = MINZ;
@@ -68,10 +68,16 @@ void changeSize(int w, int h)
 
 }
 
-
 void renderScene(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if(previousLevel != levelRenderMode){
+         x=14.5f;
+         y=30.0f;
+         angle=0.0;
+         previousLevel = levelRenderMode;
+    }
 
     if(y <= -27)
     {
