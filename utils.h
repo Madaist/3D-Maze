@@ -1,7 +1,5 @@
 #ifndef UTILS_H_INCLUDED
 #define UTILS_H_INCLUDED
-#ifndef UTILS_HPP_INCLUDED
-#define UTILS_HPP_INCLUDED
 
 #include <vector>
 #include "cube.h"
@@ -11,18 +9,29 @@ enum Levels
     NIVEL1, NIVEL2, NIVEL3
 };
 
-extern Levels levels;
+enum Coordinates
+{
+    X, Y, Z, W
+};
 
-void drawHuman();
-std::vector<Cube> drawMaze();
+enum Coefficients
+{
+    A, B, C, D
+};
+
+extern Levels levels;
+extern Coordinates coordinates;
+extern Coefficients coefficients;
+
+#define MAXZ 8.0
+#define MINZ -8.0
+#define ZINC 0.4
+
 bool checkCollision(Cube cub1, Cube cub2);
 bool checkAllCollisions(Cube player, std::vector<Cube> cuburi);
 GLuint LoadTexture(const char* filename);
 
-
-
-#endif // UTILS_HPP_INCLUDED
-
-
+void shadowmatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
+void findplane(GLfloat plane[4], GLfloat v0[3], GLfloat v1[3], GLfloat v2[3]);
 
 #endif // UTILS_H_INCLUDED

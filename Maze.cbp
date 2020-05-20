@@ -37,11 +37,10 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="cube.h" />
-		<Unit filename="declarations.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="main.cpp" />
 		<Unit filename="point.h" />
+		<Unit filename="utils.cpp" />
+		<Unit filename="utils.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
