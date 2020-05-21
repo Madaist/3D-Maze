@@ -19,5 +19,6 @@ void drawYouWinBanner();
 void drawMazeCorners();
 void drawBeginningText();
 void drawTree();
+void drawTrees();
 
 #endif // DRAWINGS_H_INCLUDED

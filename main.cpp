@@ -25,14 +25,14 @@ GLfloat floorshadow[4][4];
 GLfloat lightpos[] = {15, 15, 4, 1};
 int levelRenderMode = NIVEL1;
 int textureRenderMode = GRASS;
-int previousLevel = NIVEL1;
 int shadowRenderMode = SHADOW;
+int previousLevel = NIVEL1;
 
 static float solidZ = MAXZ;
 static float transparentZ = MINZ;
 GLuint sphereList, cubeList;
 
-GLuint leavesTexture, woodTexture, grassTexture, stoneTexture, waterTexture, marbleTexture;
+GLuint leavesTexture, woodTexture;
 
 void animate(void)
 {
@@ -44,24 +44,6 @@ void animate(void)
         transparentZ += ZINC;
         glutPostRedisplay();
     }
-}
-
-void levelMenu(int selection)
-{
-    levelRenderMode = selection;
-    glutPostRedisplay();
-}
-
-void textureMenu(int selection)
-{
-    textureRenderMode = selection;
-    glutPostRedisplay();
-}
-
-void shadowMenu(int selection)
-{
-    shadowRenderMode = selection;
-    glutPostRedisplay();
 }
 
 void changeSize(int w, int h)
@@ -119,7 +101,7 @@ void renderScene(void)
     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1);
     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
 
-    GLfloat poz1[4] = {-12, -14, 3, 1};
+    //GLfloat poz1[4] = {-12, -14, 3, 1};
     glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
 
     glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
@@ -165,29 +147,29 @@ void renderScene(void)
     drawGround();
 
     ///umbra playerului
-    if(shadowRenderMode == SHADOW){
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glColor3f(0.f, 0.f, 0.f);
-    glPushMatrix();
+    if(shadowRenderMode == SHADOW)
+    {
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_LIGHTING);
+        glColor3f(0.f, 0.f, 0.f);
+        glPushMatrix();
 
-    glTranslatef(x, y, 0); // Translation to the camera center
-    glRotatef(angle * 180/pi, 0,0, 1); // Rotate to correspond to the camera
-    glScaled(0.5, 1, 1);
-    glTranslatef(-0.5, -1.5, 0); // Offset to draw the object
+        glTranslatef(x, y, 0); // Translation to the camera center
+        glRotatef(angle * 180/pi, 0,0, 1); // Rotate to correspond to the camera
+        glScaled(0.5, 1, 1);
+        glTranslatef(-0.5, -1.5, 0); // Offset to draw the object
 
-    glMultMatrixf((GLfloat *) floorshadow);
-    glutSolidCube(0.1);
-    if(levelRenderMode != NIVEL1)
-        drawHuman();
+        glMultMatrixf((GLfloat *) floorshadow);
+        glutSolidCube(0.1);
+        if(levelRenderMode != NIVEL1)
+            drawHuman();
+        glPopMatrix();
 
-    glPopMatrix();
-
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHTING);
     }
 
+    ///playerul
     glColor3f(1, 0, 1);
     glPushMatrix();
     glTranslatef(x, y, 0); // Translation to the camera center
@@ -210,36 +192,7 @@ void renderScene(void)
 
     if(y > 20)
     {
-        glPushMatrix();
-        glTranslated(-1.7, -1.5, 0);
-        drawTree();
-        glPopMatrix();
-
-
-        if(levelRenderMode != NIVEL2)
-        {
-            glPushMatrix();
-            glTranslated(-5, 0, 0);
-            drawTree();
-            glPopMatrix();
-
-            glPushMatrix();
-            glTranslated(-8, 0, 0);
-            drawTree();
-            glPopMatrix();
-        }
-        else
-        {
-            glPushMatrix();
-            glTranslated(-8, 0, 0);
-            drawTree();
-            glPopMatrix();
-
-            glPushMatrix();
-            glTranslated(-10, 0, 0);
-            drawTree();
-            glPopMatrix();
-        }
+      drawTrees();
     }
 
     vector<Cube> cuburi = drawMaze();
@@ -293,7 +246,6 @@ void init()
 {
     woodTexture = LoadTexture("wood.png");
     leavesTexture = LoadTexture("leaves.png");
-
 }
 
 int main(int argc, char **argv)
@@ -302,7 +254,6 @@ int main(int argc, char **argv)
     GLfloat v0[3], v1[3], v2[3];
 
     glutInit(&argc, argv);
-
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(1000,700);
@@ -354,6 +305,5 @@ int main(int argc, char **argv)
     glEnable (GL_LIGHT1);
 
     glutMainLoop();
-
     return 1;
 }

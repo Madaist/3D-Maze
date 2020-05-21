@@ -4,6 +4,28 @@
 #include "SOIL.h"
 #include<iostream>
 
+void levelMenu(int selection)
+{
+    extern int levelRenderMode;
+    levelRenderMode = selection;
+    glutPostRedisplay();
+}
+
+void textureMenu(int selection)
+{
+    extern int textureRenderMode;
+    textureRenderMode = selection;
+    glutPostRedisplay();
+}
+
+void shadowMenu(int selection)
+{
+    extern int shadowRenderMode;
+    shadowRenderMode = selection;
+    glutPostRedisplay();
+}
+
+
 void shadowmatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4])
 {
     GLfloat dot;

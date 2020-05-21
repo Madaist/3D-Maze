@@ -88,7 +88,8 @@ void drawHuman()
     glPopMatrix();
 }
 
-void drawTree(){
+void drawTree()
+{
 
     extern GLuint leavesTexture, woodTexture;
 
@@ -163,6 +164,40 @@ void drawTree(){
     glDisable(GL_TEXTURE_2D);
 }
 
+
+void drawTrees()
+{
+    extern int levelRenderMode;
+
+    glPushMatrix();
+    glTranslated(-1.7, -1.5, 0);
+    drawTree();
+    glPopMatrix();
+    if(levelRenderMode != NIVEL2)
+    {
+        glPushMatrix();
+        glTranslated(-5, 0, 0);
+        drawTree();
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslated(-8, 0, 0);
+        drawTree();
+        glPopMatrix();
+    }
+    else
+    {
+        glPushMatrix();
+        glTranslated(-8, 0, 0);
+        drawTree();
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslated(-10, 0, 0);
+        drawTree();
+        glPopMatrix();
+    }
+}
 
 void drawMazeCorners()
 {

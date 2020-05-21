@@ -39,4 +39,8 @@ GLuint LoadTexture(const char* filename);
 void shadowmatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
 void findplane(GLfloat plane[4], GLfloat v0[3], GLfloat v1[3], GLfloat v2[3]);
 
+void levelMenu(int selection);
+void textureMenu(int selection);
+void shadowMenu(int selection);
+
 #endif // UTILS_H_INCLUDED
