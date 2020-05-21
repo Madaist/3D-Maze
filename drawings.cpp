@@ -130,7 +130,6 @@ void drawTree(){
     glEnable(GL_TEXTURE_2D);
     glCallList(cylinderList + 1);
     glPopMatrix();
-    //  glDisable(GL_TEXTURE_2D);
 
     ///al doilea nivel
     gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */

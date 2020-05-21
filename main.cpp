@@ -157,10 +157,29 @@ void renderScene(void)
 
     drawGround();
 
+    ///umbra playerului
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glColor3f(0.f, 0.f, 0.f);
+    glPushMatrix();
 
-    ///player
+    glTranslatef(x, y, 0); // Translation to the camera center
+    glRotatef(angle * 180/pi, 0,0, 1); // Rotate to correspond to the camera
+    glScaled(0.5, 1, 1);
+    glTranslatef(-0.5, -1.5, 0); // Offset to draw the object
+
+    glMultMatrixf((GLfloat *) floorshadow);
+    glutSolidCube(0.1);
+    if(levelRenderMode != NIVEL1)
+        drawHuman();
+
+    glPopMatrix();
+
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+
     glColor3f(1, 0, 1);
-
     glPushMatrix();
     glTranslatef(x, y, 0); // Translation to the camera center
     glRotatef(angle * 180/pi, 0,0, 1); // Rotate to correspond to the camera
@@ -175,7 +194,6 @@ void renderScene(void)
 
     if(levelRenderMode != NIVEL1)
         drawHuman();
-
     glPopMatrix();
 
 
@@ -222,7 +240,7 @@ void renderScene(void)
         glColor3f(0.f, 0.f, 0.f);
 
         glPushMatrix();
-        glTranslated(17, 10, 0.6);
+        glTranslated(17, 11, 0);
         glMultMatrixf((GLfloat *) floorshadow);
 
         glutSolidCube(0.5);
@@ -237,6 +255,7 @@ void renderScene(void)
         glutSolidCube(0.5);
         glPopMatrix();
     */
+
 
     vector<Cube> cuburi = drawMaze();
 
@@ -327,13 +346,13 @@ int main(int argc, char **argv)
     glutAddMenuEntry("MARBLE TEXTURE", MARBLE);
     glutAttachMenu(GLUT_LEFT_BUTTON);
 
-    v0[X] = -100.f;
+    v0[X] = -1000.f;
     v0[Y] = -1000.f;
     v0[Z] = 0;
-    v1[X] = -1000.f;
+    v1[X] = 1000.f;
     v1[Y] = 1000.f;
     v1[Z] = 0;
-    v2[X] = 1000.f;
+    v2[X] = -1000.f;
     v2[Y] = 1000.f;
     v2[Z] = 0;
 
