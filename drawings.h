@@ -10,10 +10,14 @@ enum Textures
 };
 
 extern Textures textures;
+extern GLuint sphereList, cubeList;
 
 void drawHuman();
 std::vector<Cube> drawMaze();
 void drawGround();
 void drawYouWinBanner();
+void drawMazeCorners();
+void drawBeginningText();
+void drawTree();
 
 #endif // DRAWINGS_H_INCLUDED

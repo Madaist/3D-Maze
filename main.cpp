@@ -15,7 +15,7 @@ float angle=0.0;
 // actual vector representing the camera's direction
 float lx=0.0f,ly=-1.0f;
 // XY position of the camera
-float x=14.5f, y=30.0f;
+float x=14.5f, y = 30.0f;
 double pi = 3.1415;
 
 int h_pressed = 0;
@@ -29,7 +29,9 @@ int previousLevel = NIVEL1;
 
 static float solidZ = MAXZ;
 static float transparentZ = MINZ;
-static GLuint sphereList, cubeList;
+GLuint sphereList, cubeList;
+
+GLuint leavesTexture, woodTexture, grassTexture, stoneTexture, waterTexture, marbleTexture;
 
 void animate(void)
 {
@@ -95,12 +97,10 @@ void renderScene(void)
     }
 
     if(y <= -22)
-    {
-       drawYouWinBanner();
-    }
+        drawYouWinBanner();
 
     GLfloat poz[4] = {-12, -20, 3, 1};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    glLightfv(GL_LIGHT0, GL_POSITION, poz);
 
     GLfloat amb[4] = {0, 0, 0, 1};
     glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
@@ -179,43 +179,42 @@ void renderScene(void)
     glPopMatrix();
 
 
-    glColor3f(0, 0, 0);
-    if(levelRenderMode != NIVEL2)
-        glRasterPos3d(15.3, 20,  3);
-    else
-        glRasterPos3d(18, 20,  0.8);
-    const char goodluck[] = "Good luck!";
-    int len = strlen(goodluck);
-    for (int i = 0; i < len; i++)
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, goodluck[i]);
+    drawBeginningText();
 
-
-    if(levelRenderMode == NIVEL3)
+    if(y > 20)
     {
-        glRasterPos3d(17, 20,  2.5);
-        const char fognotification[] = "Everything is foggy here. Will you find the exit?";
-        len = strlen(fognotification);
-        for (int i = 0; i < len; i++)
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, fognotification[i]);
+        glPushMatrix();
+        glTranslated(-1.7, -1.5, 0);
+        drawTree();
+        glPopMatrix();
+
+
+        if(levelRenderMode != NIVEL2)
+        {
+            glPushMatrix();
+            glTranslated(-5, 0, 0);
+            drawTree();
+            glPopMatrix();
+
+            glPushMatrix();
+            glTranslated(-8, 0, 0);
+            drawTree();
+            glPopMatrix();
+        }
+        else
+        {
+            glPushMatrix();
+            glTranslated(-8, 0, 0);
+            drawTree();
+            glPopMatrix();
+
+            glPushMatrix();
+            glTranslated(-10, 0, 0);
+            drawTree();
+            glPopMatrix();
+        }
     }
 
-    if(levelRenderMode == NIVEL2)
-    {
-        glRasterPos3d(18.6, 20,  0.5);
-        const char bluenotification[] = "Are the blue areas you see a";
-        len = strlen(bluenotification);
-        for (int i = 0; i < len; i++)
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, bluenotification[i]);
-    }
-
-    if(levelRenderMode == NIVEL2)
-    {
-        glRasterPos3d(18.8, 20,  0.2);
-        const char bluenotification[] = " cube or the exit? Can you tell?";
-        len = strlen(bluenotification);
-        for (int i = 0; i < len; i++)
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, bluenotification[i]);
-    }
     /*
         ///obiectul caruia vreau sa i pun umbra
         glDisable(GL_DEPTH_TEST);
@@ -247,116 +246,7 @@ void renderScene(void)
         coliziune = false;
 
     cuburi.clear();
-
-    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 0.15 };
-    GLfloat mat_shininess[] = { 100.0 };
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-    sphereList = glGenLists(1);
-    glNewList(sphereList, GL_COMPILE);
-    glutSolidSphere (0.8, 16, 16);
-    glEndList();
-    cubeList = glGenLists(1);
-    glNewList(cubeList, GL_COMPILE);
-    glutSolidCube (1.5);
-    glEndList();
-
-
-    GLfloat mat_solid[] = { 0.75, 0.75, 0.0, 1.0 };
-    GLfloat mat_zero[] = { 1.0, 0.0, 0.0, 1.0 };//
-    GLfloat mat_transparent[] = { 0.0, 0.8, 0.8, 0.6 };
-    GLfloat mat_emission[] = { 0.0, 0.3, 0.3, 0.6 };//
-
-//cub sfera colt stanga jos
-    glPushMatrix ();
-    glTranslatef (20, 15, 2.6);
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
-    glCallList (sphereList);
-    glPopMatrix ();
-
-
-    glPushMatrix ();
-    glTranslatef (20, 15, 1.7);
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
-    glEnable (GL_BLEND);
-    glDepthMask (GL_FALSE);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-    glCallList (cubeList);
-    glDepthMask (GL_TRUE);
-    glDisable (GL_BLEND);
-    glPopMatrix ();
-
-
-    //cub sfera colt dreapta jos
-    glPushMatrix ();
-    glTranslatef (-23, 14.8, 2.6);
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
-    glCallList (sphereList);
-    glPopMatrix ();
-
-
-    glPushMatrix ();
-    glTranslatef (-23, 14.8, 1.7);
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
-    glEnable (GL_BLEND);
-    glDepthMask (GL_FALSE);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-    glCallList (cubeList);
-    glDepthMask (GL_TRUE);
-    glDisable (GL_BLEND);
-    glPopMatrix ();
-
-    //cub sfera colt stanga sus
-
-    glPushMatrix ();
-    glTranslatef (19.9, -28.2, 2.6);
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
-    glCallList (sphereList);
-    glPopMatrix ();
-
-
-    glPushMatrix ();
-    glTranslatef (19.9, -28.2, 1.7);
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
-    glEnable (GL_BLEND);
-    glDepthMask (GL_FALSE);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-    glCallList (cubeList);
-    glDepthMask (GL_TRUE);
-    glDisable (GL_BLEND);
-    glPopMatrix ();
-
-    //cub sfera colt dreapta sus
-
-    glPushMatrix ();
-    glTranslatef (-23, -28, 2.6);
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
-    glCallList (sphereList);
-    glPopMatrix ();
-
-
-    glPushMatrix ();
-    glTranslatef (-23, -28, 1.7);
-
-    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
-    glEnable (GL_BLEND);
-    glDepthMask (GL_FALSE);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-    glCallList (cubeList);
-    glDepthMask (GL_TRUE);
-    glDisable (GL_BLEND);
-    glPopMatrix ();
-    glPopMatrix ();
-
-
+    drawMazeCorners();
     glutSwapBuffers();
 }
 
@@ -395,6 +285,12 @@ void processKeys(unsigned char key, int xx, int yy)
     }
 }
 
+void init()
+{
+    woodTexture = LoadTexture("wood.png");
+    leavesTexture = LoadTexture("leaves.png");
+
+}
 
 int main(int argc, char **argv)
 {
@@ -402,11 +298,13 @@ int main(int argc, char **argv)
     GLfloat v0[3], v1[3], v2[3];
 
     glutInit(&argc, argv);
+
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(1000,700);
     glutCreateWindow("Maze");
 
+    init();
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
     glutIdleFunc(renderScene);

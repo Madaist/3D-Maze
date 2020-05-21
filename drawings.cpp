@@ -88,71 +88,310 @@ void drawHuman()
     glPopMatrix();
 }
 
-void drawYouWinBanner(){
-     glEnable(GL_TEXTURE_2D);
-        LoadTexture("youwin2.png");
+void drawTree(){
 
-        glColor3f(1, 1, 1.5);
-        glPushMatrix();
-        glTranslated(-31, -60, 1);
-        glBegin(GL_POLYGON);
-        glTexCoord2f(-0.2, 1.0);
-        glVertex3d(15, 27, 1);
-        glTexCoord2f(1.0, 1.0);
-        glVertex3d(12, 27, 1);
-        glTexCoord2f(1.0, 0.0);
-        glVertex3d(12, 27, 0.2);
-        glTexCoord2f(0.0, 0.0);
-        glVertex3d(15, 27, 0.2);
-        glEnd();
+    extern GLuint leavesTexture, woodTexture;
 
-        glDisable(GL_TEXTURE_2D);
+    ///bradut
+    ///trunchi
+    glColor3f(1, 1, 1);
+    GLuint cylinderList = glGenLists(4);
+    GLUquadricObj *qobj;
+    qobj = gluNewQuadric();
+    gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
+    gluQuadricNormals(qobj, GLU_FLAT);
+    gluQuadricTexture(qobj, GL_TRUE);
+    glNewList(cylinderList, GL_COMPILE);
+    gluCylinder(qobj, 0.4, 0.3, 1, 15, 5);
+    glEndList();
+
+    glShadeModel (GL_FLAT);
+    glPushMatrix();
+    glTranslatef(21, 22, 0.0);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, woodTexture);
+    glCallList(cylinderList);
+    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
+
+    ///primul nivel
+    gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
+    gluQuadricNormals(qobj, GLU_FLAT);
+    gluQuadricTexture(qobj, GL_TRUE);
+    glNewList(cylinderList + 1, GL_COMPILE);
+    gluCylinder(qobj, 0.9, 0.2, 1, 15, 5);
+    glEndList();
+
+    glShadeModel (GL_FLAT);
+    glPushMatrix();
+    glTranslatef(21, 22, 0.6);
+
+    glBindTexture(GL_TEXTURE_2D, leavesTexture);
+    glEnable(GL_TEXTURE_2D);
+    glCallList(cylinderList + 1);
+    glPopMatrix();
+    //  glDisable(GL_TEXTURE_2D);
+
+    ///al doilea nivel
+    gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
+    gluQuadricNormals(qobj, GLU_FLAT);
+    gluQuadricTexture(qobj, GL_TRUE);
+    glNewList(cylinderList + 2, GL_COMPILE);
+    gluCylinder(qobj, 0.7, 0.1, 1, 15, 5);
+    glEndList();
+
+    glShadeModel (GL_FLAT);
+    glPushMatrix();
+    glTranslatef(21, 22, 1.2);
+    glEnable(GL_TEXTURE_2D);
+    glCallList(cylinderList + 2);
+    glPopMatrix();
+
+    ///al treilea nivel
+    gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
+    gluQuadricNormals(qobj, GLU_FLAT);
+    gluQuadricTexture(qobj, GL_TRUE);
+    glNewList(cylinderList + 3, GL_COMPILE);
+    gluCylinder(qobj, 0.5, 0, 1, 15, 5);
+    glEndList();
+
+    glShadeModel (GL_FLAT);
+    glPushMatrix();
+    glTranslatef(21, 22, 1.7);
+    glEnable(GL_TEXTURE_2D);
+    glCallList(cylinderList + 3);
+    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
+}
 
 
-        glEnable(GL_TEXTURE_2D);
-        LoadTexture("trophy.png");
-        glBegin(GL_POLYGON);
-        glTexCoord2f(0, 1.0);
-        glVertex3d(15.8, 27, 0.9);
-        glTexCoord2f(1.0, 1.0);
-        glVertex3d(15.2, 27, 0.9);
-        glTexCoord2f(1.0, 0.0);
-        glVertex3d(15.2, 27, 0.3);
-        glTexCoord2f(0.0, 0.0);
-        glVertex3d(15.8, 27, 0.3);
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
+void drawMazeCorners()
+{
+    ///sferele si cuburile din colturi -> amestecare + obiecte quadrice
+    GLUquadricObj *qobj;
+    qobj = gluNewQuadric();
+
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 0.15 };
+    GLfloat mat_shininess[] = { 100.0 };
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+    sphereList = glGenLists(1);
+    gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
+    gluQuadricNormals(qobj, GLU_SMOOTH);
+    glNewList(sphereList, GL_COMPILE);
+    gluSphere (qobj, 0.8, 16, 16);
+    glEndList();
+
+    cubeList = glGenLists(1);
+    glNewList(cubeList, GL_COMPILE);
+    glutSolidCube (1.5);
+    glEndList();
 
 
-        glEnable(GL_TEXTURE_2D);
-        LoadTexture("trophy.png");
-        glBegin(GL_POLYGON);
-        glTexCoord2f(0, 1.0);
-        glVertex3d(11.8, 27, 0.9);
-        glTexCoord2f(1.0, 1.0);
-        glVertex3d(11.2, 27, 0.9);
-        glTexCoord2f(1.0, 0.0);
-        glVertex3d(11.2, 27, 0.3);
-        glTexCoord2f(0.0, 0.0);
-        glVertex3d(11.8, 27, 0.3);
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
+    GLfloat mat_solid[] = { 0.75, 0.75, 0.0, 1.0 };
+    GLfloat mat_zero[] = { 1.0, 0.0, 0.0, 1.0 };//
+    GLfloat mat_transparent[] = { 0.0, 0.8, 0.8, 0.6 };
+    GLfloat mat_emission[] = { 0.0, 0.3, 0.3, 0.6 };//
+
+//cub sfera colt stanga jos
+    glPushMatrix ();
+    glTranslatef (20, 15, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
 
 
-        glEnable(GL_TEXTURE_2D);
-        LoadTexture("trophy.png");
-        glBegin(GL_POLYGON);
-        glTexCoord2f(0, 1.0);
-        glVertex3d(15.8, 27, 0.9);
-        glTexCoord2f(1.0, 1.0);
-        glVertex3d(15.2, 27, 0.9);
-        glTexCoord2f(1.0, 0.0);
-        glVertex3d(15.2, 27, 0.3);
-        glTexCoord2f(0.0, 0.0);
-        glVertex3d(15.8, 27, 0.3);
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
-        glPopMatrix();
+    glPushMatrix ();
+    glTranslatef (20, 15, 1.7);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+
+
+    //cub sfera colt dreapta jos
+    glPushMatrix ();
+    glTranslatef (-23, 14.8, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
+
+
+    glPushMatrix ();
+    glTranslatef (-23, 14.8, 1.7);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+
+    //cub sfera colt stanga sus
+
+    glPushMatrix ();
+    glTranslatef (19.9, -28, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
+
+
+    glPushMatrix ();
+    glTranslatef (19.9, -28, 1.7);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+
+    //cub sfera colt dreapta sus
+
+    glPushMatrix ();
+    glTranslatef (-23, -28, 2.6);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_zero);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
+    glCallList (sphereList);
+    glPopMatrix ();
+
+
+    glPushMatrix ();
+    glTranslatef (-23, -28, 1.7);
+
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
+    glEnable (GL_BLEND);
+    glDepthMask (GL_FALSE);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+    glCallList (cubeList);
+    glDepthMask (GL_TRUE);
+    glDisable (GL_BLEND);
+    glPopMatrix ();
+    glPopMatrix ();
+}
+
+void drawBeginningText()
+{
+    extern int levelRenderMode;
+    glColor3f(0, 0, 0);
+    if(levelRenderMode != NIVEL2)
+        glRasterPos3d(15.3, 20,  3);
+    else
+        glRasterPos3d(18, 20,  0.8);
+    const char goodluck[] = "Good luck!";
+    int len = strlen(goodluck);
+    for (int i = 0; i < len; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, goodluck[i]);
+
+
+    if(levelRenderMode == NIVEL3)
+    {
+        glRasterPos3d(17, 20,  2.5);
+        const char fognotification[] = "Everything is foggy here. Will you find the exit?";
+        len = strlen(fognotification);
+        for (int i = 0; i < len; i++)
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, fognotification[i]);
+    }
+
+    if(levelRenderMode == NIVEL2)
+    {
+        glRasterPos3d(18.6, 20,  0.5);
+        const char bluenotification[] = "Are the blue areas you see a";
+        len = strlen(bluenotification);
+        for (int i = 0; i < len; i++)
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, bluenotification[i]);
+    }
+
+    if(levelRenderMode == NIVEL2)
+    {
+        glRasterPos3d(18.8, 20,  0.2);
+        const char bluenotification[] = " cube or the exit? Can you tell?";
+        len = strlen(bluenotification);
+        for (int i = 0; i < len; i++)
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, bluenotification[i]);
+    }
+}
+
+void drawYouWinBanner()
+{
+    glEnable(GL_TEXTURE_2D);
+    LoadTexture("youwin2.png");
+
+    glColor3f(1, 1, 1.5);
+    glPushMatrix();
+    glTranslated(-31, -60, 1);
+    glBegin(GL_POLYGON);
+    glTexCoord2f(-0.2, 1.0);
+    glVertex3d(15, 27, 1);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3d(12, 27, 1);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3d(12, 27, 0.2);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3d(15, 27, 0.2);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+
+
+    glEnable(GL_TEXTURE_2D);
+    LoadTexture("trophy.png");
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0, 1.0);
+    glVertex3d(15.8, 27, 0.9);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3d(15.2, 27, 0.9);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3d(15.2, 27, 0.3);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3d(15.8, 27, 0.3);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+
+    glEnable(GL_TEXTURE_2D);
+    LoadTexture("trophy.png");
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0, 1.0);
+    glVertex3d(11.8, 27, 0.9);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3d(11.2, 27, 0.9);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3d(11.2, 27, 0.3);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3d(11.8, 27, 0.3);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+
+    glEnable(GL_TEXTURE_2D);
+    LoadTexture("trophy.png");
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0, 1.0);
+    glVertex3d(15.8, 27, 0.9);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3d(15.2, 27, 0.9);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3d(15.2, 27, 0.3);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3d(15.8, 27, 0.3);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
 }
 
 std::vector<Cube> drawMaze()
