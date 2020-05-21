@@ -14,5 +14,6 @@ extern Textures textures;
 void drawHuman();
 std::vector<Cube> drawMaze();
 void drawGround();
+void drawYouWinBanner();
 
 #endif // DRAWINGS_H_INCLUDED

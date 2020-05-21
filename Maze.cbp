@@ -37,6 +37,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="cube.h" />
+		<Unit filename="drawings.cpp" />
+		<Unit filename="drawings.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="point.h" />
 		<Unit filename="utils.cpp" />

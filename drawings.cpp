@@ -88,6 +88,73 @@ void drawHuman()
     glPopMatrix();
 }
 
+void drawYouWinBanner(){
+     glEnable(GL_TEXTURE_2D);
+        LoadTexture("youwin2.png");
+
+        glColor3f(1, 1, 1.5);
+        glPushMatrix();
+        glTranslated(-31, -60, 1);
+        glBegin(GL_POLYGON);
+        glTexCoord2f(-0.2, 1.0);
+        glVertex3d(15, 27, 1);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3d(12, 27, 1);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3d(12, 27, 0.2);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3d(15, 27, 0.2);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+
+
+        glEnable(GL_TEXTURE_2D);
+        LoadTexture("trophy.png");
+        glBegin(GL_POLYGON);
+        glTexCoord2f(0, 1.0);
+        glVertex3d(15.8, 27, 0.9);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3d(15.2, 27, 0.9);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3d(15.2, 27, 0.3);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3d(15.8, 27, 0.3);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+
+
+        glEnable(GL_TEXTURE_2D);
+        LoadTexture("trophy.png");
+        glBegin(GL_POLYGON);
+        glTexCoord2f(0, 1.0);
+        glVertex3d(11.8, 27, 0.9);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3d(11.2, 27, 0.9);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3d(11.2, 27, 0.3);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3d(11.8, 27, 0.3);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+
+
+        glEnable(GL_TEXTURE_2D);
+        LoadTexture("trophy.png");
+        glBegin(GL_POLYGON);
+        glTexCoord2f(0, 1.0);
+        glVertex3d(15.8, 27, 0.9);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3d(15.2, 27, 0.9);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3d(15.2, 27, 0.3);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3d(15.8, 27, 0.3);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
+}
+
 std::vector<Cube> drawMaze()
 {
     extern int levelRenderMode;

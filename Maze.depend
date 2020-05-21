@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1590010640 source:c:\users\40787\desktop\maze\main.cpp
+1590077283 source:c:\users\40787\desktop\maze\main.cpp
 	<gl/freeglut.h>
 	<cmath>
 	<stdlib.h>
@@ -8,7 +8,6 @@
 	<vector>
 	"SOIL.h"
 	"cube.h"
-	"declarations.h"
 	"utils.h"
 	"drawings.h"
 
@@ -27,7 +26,7 @@
 	<vector>
 	"cube.h"
 
-1590010552 source:c:\users\40787\desktop\maze\utils.cpp
+1590073525 source:c:\users\40787\desktop\maze\utils.cpp
 	<gl/freeglut.h>
 	"utils.h"
 	"cube.h"
@@ -44,7 +43,7 @@
 	<vector>
 	"cube.h"
 
-1590010704 source:c:\users\40787\desktop\maze\drawings.cpp
+1590070750 source:c:\users\40787\desktop\maze\drawings.cpp
 	<gl/freeglut.h>
 	"drawings.h"
 	"cube.h"

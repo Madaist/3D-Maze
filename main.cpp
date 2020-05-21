@@ -72,21 +72,14 @@ void renderScene(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if(previousLevel != levelRenderMode){
-         x=14.5f;
-         y=30.0f;
-         angle=0.0;
-         previousLevel = levelRenderMode;
-    }
-
-    if(y <= -27)
+    if(previousLevel != levelRenderMode)
     {
-        glColor3f(0, 0, 0);
-        glRasterPos3d(-15, -29, 0.5);
-        const char congrats[] = "Congratulations! You won.";
-        int len = strlen(congrats);
-        for (int i = 0; i < len; i++)
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, congrats[i]);
+        x=14.5f;
+        y=30.0f;
+        angle=0.0;
+        lx=0.0f;
+        ly=-1.0f;
+        previousLevel = levelRenderMode;
     }
 
     glClearColor (0, 0, 1, 1.0);
@@ -101,6 +94,10 @@ void renderScene(void)
         gluLookAt(0, 5, 70,    0, 0, 1,    0.0f, 1.0f, 0.0f);
     }
 
+    if(y <= -22)
+    {
+       drawYouWinBanner();
+    }
 
     GLfloat poz[4] = {-12, -20, 3, 1};
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
@@ -172,8 +169,8 @@ void renderScene(void)
     Cube player(0.1, Point(0, 0, 0.0));
     ///aici trebuie setat centrul cubului jucator (deoarece el are aplicate doua translatii si o rotatie
     /// => centrul cubului depinde si de transformari => il iau din rezultatul inmultirii matricelor
-    player.centre = Point(0.01*cos(angle) + 1*sin(angle) + x,
-                          0.01*sin(angle) - 1*cos(angle) + y,
+    player.centre = Point(0.001*cos(angle) + 1*sin(angle) + x,
+                          0.001*sin(angle) - 1*cos(angle) + y,
                           0.25);
 
     if(levelRenderMode != NIVEL1)
