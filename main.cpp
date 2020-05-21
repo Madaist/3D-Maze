@@ -26,6 +26,7 @@ GLfloat lightpos[] = {15, 15, 4, 1};
 int levelRenderMode = NIVEL1;
 int textureRenderMode = GRASS;
 int previousLevel = NIVEL1;
+int shadowRenderMode = SHADOW;
 
 static float solidZ = MAXZ;
 static float transparentZ = MINZ;
@@ -54,6 +55,12 @@ void levelMenu(int selection)
 void textureMenu(int selection)
 {
     textureRenderMode = selection;
+    glutPostRedisplay();
+}
+
+void shadowMenu(int selection)
+{
+    shadowRenderMode = selection;
     glutPostRedisplay();
 }
 
@@ -158,6 +165,7 @@ void renderScene(void)
     drawGround();
 
     ///umbra playerului
+    if(shadowRenderMode == SHADOW){
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     glColor3f(0.f, 0.f, 0.f);
@@ -178,6 +186,7 @@ void renderScene(void)
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
+    }
 
     glColor3f(1, 0, 1);
     glPushMatrix();
@@ -232,30 +241,6 @@ void renderScene(void)
             glPopMatrix();
         }
     }
-
-    /*
-        ///obiectul caruia vreau sa i pun umbra
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_LIGHTING);
-        glColor3f(0.f, 0.f, 0.f);
-
-        glPushMatrix();
-        glTranslated(17, 11, 0);
-        glMultMatrixf((GLfloat *) floorshadow);
-
-        glutSolidCube(0.5);
-        glPopMatrix();
-
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_LIGHTING);
-
-        glColor3f(0.4, 1, 0.2);
-        glPushMatrix();
-        glTranslated(17, 11, 0.6);
-        glutSolidCube(0.5);
-        glPopMatrix();
-    */
-
 
     vector<Cube> cuburi = drawMaze();
 
@@ -345,6 +330,11 @@ int main(int argc, char **argv)
     glutAddMenuEntry("WATER TEXTURE", WATER);
     glutAddMenuEntry("MARBLE TEXTURE", MARBLE);
     glutAttachMenu(GLUT_LEFT_BUTTON);
+
+    glutCreateMenu(shadowMenu);
+    glutAddMenuEntry("SHADOW", SHADOW);
+    glutAddMenuEntry("NO SHADOW", NOSHADOW);
+    glutAttachMenu(GLUT_MIDDLE_BUTTON);
 
     v0[X] = -1000.f;
     v0[Y] = -1000.f;

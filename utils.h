@@ -19,9 +19,14 @@ enum Coefficients
     A, B, C, D
 };
 
+enum Shadow{
+    SHADOW, NOSHADOW
+};
+
 extern Levels levels;
 extern Coordinates coordinates;
 extern Coefficients coefficients;
+extern Shadow shadows;
 
 #define MAXZ 8.0
 #define MINZ -8.0
